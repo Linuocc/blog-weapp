@@ -1,0 +1,18 @@
+<scroll-view scroll-y class="DrawerPage {{modalName=='viewModal'?'show':''}}">
+  <cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+    <view slot="backText">返回</view>
+    <view slot="content" class="text-cut">{{title}}</view>
+  </cu-custom>
+  <view class="show-img-btn cuIcon-right" bindtap="showModal"  data-target="viewModal" wx:if="{{imageArray.length!=0}}"></view>
+  <rich-text style="width:100%" nodes="{{node}}"></rich-text>
+</scroll-view>
+<view class="DrawerClose {{modalName=='viewModal'?'show':''}}" bindtap="hideModal">
+  <text class="cuIcon-pullright"></text>
+</view>
+<scroll-view scroll-y class="DrawerWindow {{modalName=='viewModal'?'show':''}}">
+  <view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg">
+    <view class="cu-item" wx:for="{{imageArray}}" wx:key="index">
+      <image mode="aspectFill" class="articly-img" src="{{item}}" data-index="{{index}}" bindtap="previewImage"></image>
+    </view>
+  </view>
+</scroll-view>

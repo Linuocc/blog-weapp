@@ -1,0 +1,22 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content" class="text-cut">{{title}}</view>
+</cu-custom>
+<view class="cu-card article">
+  <view class="cu-item shadow" wx:for="{{articlesList}}" wx:key="index" data-index="{{index}}" bindtap="openArticleDetile">
+    <view class="title">
+      <view class="text-cut">{{item.title}}</view>
+    </view>
+    <view class="content">
+      <view class="desc">
+        <view class="text-content">
+          {{item.description}}
+        </view>
+        <view>
+          <view class="cu-tag bg-green light sm round">{{item.createdTime}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="cu-load cu-item bg-white {{!end?'loading':'over'}}"></view>
+</view>
