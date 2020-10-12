@@ -1,3 +1,7 @@
+const {
+  formatTime
+} = require("../../../utils/util");
+
 let startPoint;
 const app = getApp();
 const cloud = wx.cloud;
@@ -9,49 +13,37 @@ Page({
   data: {
 
     imageArray: [],
-
+    isLoad: false,
+    showImgBtn: false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if ("aid" in options) {
-      wx.showLoading({
-        title: '加载中',
-        mask: true
-      })
-      cloud.callFunction({
-        name: "getList",
-        data: {
-          type: 3,
-          aid: options.aid,
-        }
-      }).then(res => {
-        const data = res.result;
-        this.setData({
+    cloud.callFunction({
+      name: "getList",
+      data: {
+        type: 3,
+        aid: options.aid,
+      }
+    }).then(res => {
+      const data = res.result;
+      // console.log(data)
+      this.setData({
+        title: data.title,
+        node: this.formatHtml(data.htmlContent),
+        aid: data.aid,
+        author: data.author,
+        createdTime: formatTime(new Date(data.createdTime)),
+        isLoad: true
+      }, () => {
+        wx.setNavigationBarTitle({
           title: data.title,
-          node: this.formatHtml(data.htmlContent),
-          aid: data.aid
-        }, () => {
-          wx.hideLoading({
-            success: (res) => {},
-          })
-        })
-
-      })
-    } else {
-      this.getOpenerEventChannel().on('getData', (data) => {
-        let node = this.formatHtml(data.content);
-
-        this.setData({
-          title: data.title,
-          aid: data.aid,
-          node
         })
       })
-    }
 
+    })
   },
 
   formatHtml(htmlContent) {
@@ -75,6 +67,9 @@ Page({
           imageArray: arr
         })
       }
+      this.setData({
+        showImgBtn: true
+      })
     }
     return htmlContent;
 
@@ -89,12 +84,14 @@ Page({
   },
   showModal(e) {
     this.setData({
-      modalName: e.currentTarget.dataset.target
+      modalName: e.currentTarget.dataset.target,
+      showImgBtn: false
     })
   },
   hideModal(e) {
     this.setData({
-      modalName: null
+      modalName: null,
+      showImgBtn: true
     })
   },
 

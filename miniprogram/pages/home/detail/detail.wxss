@@ -1,14 +1,25 @@
-
 page {
   background-image: var(--gradualBlue);
   width: 100vw;
   /* overflow: hidden; */
 }
-.show-img-btn{
+
+.title {
+  font-size: 40rpx;
+  font-weight: bold;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.author {
+  margin-left: 5%;
+  margin-top: 10rpx;
+}
+
+.show-img-btn {
   width: 50rpx;
   height: 100rpx;
   position: fixed;
-  /* background: #4182E8; */
   top: 50%;
   left: 0;
   margin-top: -50rpx;
@@ -21,6 +32,24 @@ page {
   opacity: 0.9;
   z-index: 1000;
 }
+
+.close-img-btn {
+  width: 100rpx;
+  height: 100rpx;
+  position: fixed;
+  top: 50%;
+  right: 20rpx;
+  margin-top: -50rpx;
+  font-size: 50rpx;
+  text-align: center;
+  border-radius: 25rpx;
+  background: #F1F1F1;
+  line-height: 100rpx;
+  opacity: 0.9;
+  z-index: 1000;
+  transition: all 0.4s;
+}
+
 .DrawerPage {
   position: fixed;
   width: 100vw;
@@ -128,7 +157,7 @@ page {
 
 .wrap {
   width: 90%;
-  margin: 0 auto;
+  margin: 40rpx auto 40rpx;
 }
 
 .h2 {

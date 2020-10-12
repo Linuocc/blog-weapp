@@ -1,14 +1,20 @@
 <scroll-view scroll-y class="DrawerPage {{modalName=='viewModal'?'show':''}}">
-  <cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
-    <view slot="backText">返回</view>
-    <view slot="content" class="text-cut">{{title}}</view>
-  </cu-custom>
-  <view class="show-img-btn cuIcon-right" bindtap="showModal"  data-target="viewModal" wx:if="{{imageArray.length!=0}}"></view>
+  <view class="title">{{title}}</view>
+  <view class="cu-capsule round author" wx:if="{{isLoad}}">
+    <view class="cu-tag">
+      {{author}}
+    </view>
+    <view class="cu-tag">
+      {{createdTime}}
+    </view>
+  </view>
+  <view class="show-img-btn cuIcon-right" bindtap="showModal" data-target="viewModal" wx:if="{{showImgBtn}}">
+  </view>
   <rich-text style="width:100%" nodes="{{node}}"></rich-text>
+  <view class="cu-load bg-white {{!isLoad?'loading':'over'}}"></view>
 </scroll-view>
-<view class="DrawerClose {{modalName=='viewModal'?'show':''}}" bindtap="hideModal">
-  <text class="cuIcon-pullright"></text>
-</view>
+
+<view class="close-img-btn cuIcon-back" bindtap="hideModal" wx:if="{{modalName=='viewModal'&&isLoad}}"></view>
 <scroll-view scroll-y class="DrawerWindow {{modalName=='viewModal'?'show':''}}">
   <view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg">
     <view class="cu-item" wx:for="{{imageArray}}" wx:key="index">

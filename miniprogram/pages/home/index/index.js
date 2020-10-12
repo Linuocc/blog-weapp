@@ -133,7 +133,7 @@ Page({
         let str = articlesList[i].htmlContent;
         let time = articlesList[i].createdTime;
         str = str.replace(reg, '');
-        str = str.substring(0, 100);
+        str = str.substring(0, 120);
         articlesList[i].description = str;
         articlesList[i].createdTime = formatTime(new Date(time));
       }

@@ -1,4 +1,6 @@
-const { formatTime } = require("../../../utils/util")
+const {
+  formatTime
+} = require("../../../utils/util")
 
 const cloud = wx.cloud
 Page({
@@ -50,22 +52,27 @@ Page({
         let {
           articlesList
         } = this.data;
-        articlesList.push(...res.result.data)
-        
+
+        let {
+          data
+        } = res.result;
+
+
         let arr = [];
 
         let reg = /<\/?.+?\/?>/ig;
         // let reg = new RegExp("<\/?.+?\/?>",'g')
 
-        for (let i = 0; i < articlesList.length; i++) {
-          let str = articlesList[i].htmlContent;
-          let time = articlesList[i].createdTime;
+        for (let i = 0; i < data.length; i++) {
+          let str = data[i].htmlContent;
+          let time = data[i].createdTime;
           str = str.replace(reg, '');
           str = str.substring(0, 100);
-          articlesList[i].description = str;
-          articlesList[i].createdTime = formatTime(new Date(time));
-
+          data[i].description = str;
+          data[i].createdTime = formatTime(new Date(time));
         }
+
+        articlesList.push(...data)
         this.setData({
           articlesList,
           currentPage: this.data.currentPage + 1,
@@ -80,14 +87,7 @@ Page({
     const index = option.currentTarget.dataset.index;
     const data = this.data.articlesList[index];
     wx.navigateTo({
-      url: '/pages/home/detail/detail',
-      success(res) {
-        res.eventChannel.emit("getData", {
-          title: data.title,
-          content: data.htmlContent,
-          aid:data.aid
-        })
-      }
+      url: '/pages/home/detail/detail?aid=' + data.aid,
     })
   },
 
