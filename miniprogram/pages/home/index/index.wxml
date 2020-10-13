@@ -1,22 +1,23 @@
-<swiper class="card-swiper {{DotStyle?'square-dot':'round-dot'}}" indicator-dots="true" circular="true" autoplay="true"
+<!-- 轮播区域 -->
+<swiper class="card-swiper" indicator-dots="true" circular="true" autoplay="true"
   interval="5000" duration="500" bindchange="cardSwiper" indicator-color="#8799a3" indicator-active-color="#0081ff"
   style="margin-top:30rpx">
   <swiper-item wx:for="{{articlesList}}" wx:key="index" class="{{cardCur==index?'cur':''}}" data-index="{{index}}"
     bindtap="openArticleDetile">
-    <view class="swiper-item" style="position: relative;">
-      <image src="{{swiperList[index].url}}" mode="aspectFill">
-      </image>
-      <view class="swiper-content">
-        <view class="title" style="color:white">
-          <view class="text-cut">{{item.title}}</view>
-        </view>
-        <view class="content" style="color:#BABABA;font-size:25rpx">
-          <view class="desc">
-            <view class="text-content">
-              {{item.description}}
-            </view>
-            <view>
-              <view class="cu-tag bg-green light sm round">{{item.createdTime}}</view>
+    <view class="swiper-item" style="position: relative;background:white">
+      <view class="cu-card article">
+        <view class="cu-item shadow ">
+          <view class="title">
+            <view class="text-cut">{{item.title}}</view>
+          </view>
+          <view class="content">
+            <image wx:if="{{false}}" src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
+              mode="aspectFill"></image>
+            <view class="desc">
+              <view class="text-content">{{item.description}}</view>
+              <view>
+                <view class="cu-tag bg-green light sm round">{{item.createdTime}}</view>
+              </view>
             </view>
           </view>
         </view>
@@ -24,6 +25,8 @@
     </view>
   </swiper-item>
 </swiper>
+
+<!-- 分类列表 -->
 <view class='nav-list'>
   <navigator open-type="navigate" hover-class='none'
     url="/pages/home/article/article?cid={{item.cid}}&title={{item.categoryName}}"
@@ -33,4 +36,3 @@
     <text class='cuIcon-{{style[index%10].icon}}'></text>
   </navigator>
 </view>
-

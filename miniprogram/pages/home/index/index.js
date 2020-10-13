@@ -9,7 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    style: [{
+    style: [{ //分类列表的颜色和图标
         color: 'cyan',
         icon: 'newsfill'
       },
@@ -50,43 +50,19 @@ Page({
         icon: 'loading2'
       }
     ],
-    cardCur: 0,
-    swiperList: [{
-      id: 0,
-      type: 'image',
-      url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg'
-    }, {
-      id: 1,
-      type: 'image',
-      url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big84001.jpg',
-    }, {
-      id: 2,
-      type: 'image',
-      url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big39000.jpg'
-    }, {
-      id: 3,
-      type: 'image',
-      url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg'
-    }, {
-      id: 4,
-      type: 'image',
-      url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg'
-    }],
+    cardCur: 0, //轮播图当前显示的item的index
     CategoriesList: [], //分类数据
-    articlesList: []
+    articlesList: [], //轮播区域文章列表
   },
-  DotStyle(e) {
-    this.setData({
-      DotStyle: e.detail.value
-    })
-  },
-  // cardSwiper
+
+  //轮播发生变化
   cardSwiper(e) {
     this.setData({
       cardCur: e.detail.current
     })
   },
 
+  //点击轮播图打开文章详情页
   openArticleDetile(option) {
     const index = option.currentTarget.dataset.index;
     const data = this.data.articlesList[index];
@@ -99,20 +75,26 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.getData(() => {
+
+    })
+  },
+
+  //获取轮播图展示的文章数据
+  getData(callback) {
     wx.showLoading({
       title: '加载中',
       mask: true
     })
-
-    Promise.all([
-      cloud.callFunction({
+    Promise.all([ //保证两个数据都请求成功
+      cloud.callFunction({ //获取文章数据
         name: "getList",
         data: {
           type: 2,
           page: 1,
           limit: 5
         }
-      }), cloud.callFunction({
+      }), cloud.callFunction({ //获取分类数据
         name: "getList",
         data: {
           type: 1, //1获取文章分类列表，2获取文章列表
@@ -124,7 +106,7 @@ Page({
     ]).then(res => {
       let articlesList = res[0].result.data
       let reg = /<\/?.+?\/?>/ig;
-      for (let i = 0; i < articlesList.length; i++) {
+      for (let i = 0; i < articlesList.length; i++) { //去掉内容里面的html标签，截取前120长度的字符串作为描述信息
         let str = articlesList[i].htmlContent;
         let time = articlesList[i].createdTime;
         str = str.replace(reg, '');
@@ -138,7 +120,9 @@ Page({
         CategoriesList: res[1].result.data
       })
       wx.hideLoading({
-        success: (res) => {},
+        success: (res) => {
+          callback()
+        },
       })
     }).catch(err => {
       wx.showToast({
@@ -147,7 +131,19 @@ Page({
         mask: true
       })
     })
-
+  },
+  // 下拉刷新
+  onPullDownRefresh() {
+    this.getData(() => {
+      wx.showToast({
+        title: '刷新成功',
+        icon: "success",
+        duration: 500
+      })
+      wx.stopPullDownRefresh({
+        success: (res) => {},
+      })
+    })
   },
 
   /**

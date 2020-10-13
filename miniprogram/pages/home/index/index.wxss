@@ -9,7 +9,6 @@ page {
   z-index: 100;
   top: 0;
   left: 0;
-  /* background: red; */
   width: 100%;
   height: 100%;
   padding: 10rpx;
@@ -45,6 +44,10 @@ page {
   border-radius: 10rpx;
   opacity: 0.2;
   transform: scale(0.9, 0.9);
+}
+
+.cu-item.shadow{
+  margin: 0rpx;
 }
 
 .nav-li.cur {

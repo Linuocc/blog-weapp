@@ -12,7 +12,7 @@ Page({
     currentPage: 1, //当前页数
     limit: 5, //每页数据条数
     articlesList: [], //文章列表
-    end: false
+    end: false, //列表分页结束
   },
 
   /**
@@ -27,26 +27,29 @@ Page({
     const {
       currentPage,
       limit
-    } = this.data
-    this.getArticleList(currentPage, limit, options.cid, () => {
+    } = this.data;
 
-
-    })
+    //调用获取文章列表的方法
+    this.getArticleList(currentPage, limit, options.cid, () => {})
   },
 
+
+  /**
+   * 获取文章列表
+   * @param {Number} cureentPage 
+   * @param {Number} limit 
+   * @param {Number} cid 
+   * @param {Function} callback 
+   */
   getArticleList(cureentPage, limit, cid, callback) {
-    if (!this.data.end) {
-      // wx.showLoading({
-      //   title: '加载中',
-      //   mask:true
-      // })
-      cloud.callFunction({
+    if (!this.data.end) { //判断是否加载分页结束
+      cloud.callFunction({ //调用获取文章列表的云函数
         name: "getList",
         data: {
-          type: 2,
-          page: cureentPage,
-          limit,
-          cid
+          type: 2, //2表示获取文章列表
+          page: cureentPage, //当前页码
+          limit, //每页数据量
+          cid, //分类id
         }
       }).then(res => {
         let {
@@ -58,8 +61,7 @@ Page({
         } = res.result;
 
 
-        let arr = [];
-
+        //循环遍历获取到的数据，除去html标签，截取前100位作为文字描述
         let reg = /<\/?.+?\/?>/ig;
         // let reg = new RegExp("<\/?.+?\/?>",'g')
 
@@ -72,17 +74,18 @@ Page({
           data[i].createdTime = formatTime(new Date(time));
         }
 
-        articlesList.push(...data)
+        articlesList.push(...data); //新的数据追加在之前的数据后边
         this.setData({
           articlesList,
           currentPage: this.data.currentPage + 1,
           end: res.result.data.length < limit
         })
-        callback();
+        callback(); //触发回调函数
       })
     }
   },
 
+  //打开文章详情页事件
   openArticleDetile(option) {
     const index = option.currentTarget.dataset.index;
     const data = this.data.articlesList[index];
@@ -100,9 +103,26 @@ Page({
       currentPage,
       limit,
       cid
-    } = this.data
+    } = this.data;
+
+    // 调用文章列表获取数据方法
     this.getArticleList(currentPage, limit, cid, () => {
       // wx.hideLoading()
+    })
+  },
+
+  //下拉刷新
+  onPullDownRefresh() {
+    this.setData({ //将当前页码设置为1，文章列表清空，加载状态设置为加载中
+      currentPage: 1,
+      articlesList: [],
+      end: false
+    }, () => {
+      this.getArticleList(this.data.currentPage, this.data.limit, this.data.cid, () => {
+        wx.stopPullDownRefresh({
+          success: (res) => {},
+        })
+      })
     })
   },
 

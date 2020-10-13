@@ -1,9 +1,13 @@
+<!-- 导航栏 -->
 <cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
   <view slot="backText">返回</view>
   <view slot="content" class="text-cut">{{title}}</view>
 </cu-custom>
+
+<!-- 文章列表 -->
 <view class="cu-card article">
-  <view class="cu-item shadow" wx:for="{{articlesList}}" wx:key="index" data-index="{{index}}" bindtap="openArticleDetile">
+  <view class="cu-item shadow" wx:for="{{articlesList}}" wx:key="index" data-index="{{index}}"
+    bindtap="openArticleDetile">
     <view class="title">
       <view class="text-cut">{{item.title}}</view>
     </view>
@@ -18,5 +22,7 @@
       </view>
     </view>
   </view>
+
+  <!-- 列表加载状态 -->
   <view class="cu-load cu-item bg-white {{!end?'loading':'over'}}"></view>
 </view>
