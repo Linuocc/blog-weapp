@@ -4,6 +4,7 @@ page {
   /* overflow: hidden; */
 }
 
+
 /* 标题 */
 .title {
   font-size: 40rpx;
@@ -121,6 +122,9 @@ page {
   width: 90%;
   margin: 40rpx auto 40rpx;
   user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
   /*设置文本可以选中*/
 }
 

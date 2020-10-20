@@ -19,7 +19,7 @@
   <view class="show-img-btn cuIcon-right" catchtap="showModal" data-target="viewModal" wx:if="{{showImgBtn}}"></view>
 
   <!-- 展示内容的富文本标签 -->
-  <rich-text style="width:100%" nodes="{{node}}" selectable='true'></rich-text>
+  <rich-text style="width:100%;-webkit-user-select: text;user-select:text" nodes="{{node}}" selectable='true'></rich-text>
 
   <!-- 底部加载状态 -->
   <view class="cu-load bg-white {{!isLoad?'loading':'over'}}"></view>
